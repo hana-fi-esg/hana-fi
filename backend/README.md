@@ -13,12 +13,19 @@
 
 ## 실행
 1. PostgreSQL 실행 후 DB `esg_platform` 준비
-2. 환경변수(선택)
+2. Java 17 설치 및 `JAVA_HOME` 설정 권장
+3. 환경변수(선택)
    - `DB_URL`
    - `DB_USERNAME`
    - `DB_PASSWORD`
-3. 실행 명령
-   - `./gradlew bootRun`
+4. 실행 명령
+   - Mac/Linux: `./gradlew bootRun`
+   - Windows: `gradlew.bat bootRun`
+
+기본값:
+- `DB_URL=jdbc:postgresql://localhost:5432/esg_platform`
+- `DB_USERNAME=postgres`
+- `DB_PASSWORD=` (빈 값)
 
 ## 핵심 용어
 - **해시(SHA-256)**: 입력 데이터를 고정 길이 문자열로 변환한 값

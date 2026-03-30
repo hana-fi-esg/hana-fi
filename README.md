@@ -19,24 +19,37 @@ AI + 블록체인 기반 부동산 ESG 금융 의사결정 플랫폼 MVP입니�
 - `legacy/`: 기존 정적 HTML 백업
 
 ## 로컬 실행 방법
+### 0) 공통 준비
+- Java 17 (`JAVA_HOME` 설정 권장)
+- Node.js LTS (18 이상 권장)
+- PostgreSQL
+
 ### 1) PostgreSQL 준비
 1. PostgreSQL 실행
 2. DB 생성: `esg_platform`
 
 ### 2) Backend 실행
+Mac/Linux:
 ```bash
 cd backend
 ./gradlew bootRun
+```
+
+Windows (PowerShell):
+```powershell
+cd backend
+.\gradlew.bat bootRun
 ```
 
 기본 포트: `http://localhost:8080`
 
 선택 환경변수:
 - `DB_URL` (기본: `jdbc:postgresql://localhost:5432/esg_platform`)
-- `DB_USERNAME` (기본: `minjae`)
+- `DB_USERNAME` (기본: `postgres`)
 - `DB_PASSWORD` (기본: 빈 값)
 
 ### 3) Frontend 실행
+Mac/Linux/Windows 공통:
 ```bash
 cd frontend
 npm install

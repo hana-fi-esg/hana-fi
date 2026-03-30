@@ -19,13 +19,25 @@
    - `DB_USERNAME`
    - `DB_PASSWORD`
 4. 실행 명령
-   - Mac/Linux: `./gradlew bootRun`
+   - Mac/Linux: `export JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home && ./gradlew bootRun`
    - Windows: `gradlew.bat bootRun`
+
+Java 17 인식 오류가 날 때(Gradle toolchain):
+- Mac/Linux: `./gradlew -Dorg.gradle.java.installations.paths="$JAVA_HOME" bootRun`
+- Windows(PowerShell): `.\gradlew.bat -Dorg.gradle.java.installations.paths="$env:JAVA_HOME" bootRun`
+
+참고:
+- 일부 Mac 환경에서 `/usr/libexec/java_home -v 17`가 17을 못 찾을 수 있습니다.
+- 그 경우 위의 Homebrew 경로(`/opt/homebrew/opt/openjdk@17/...`)를 직접 사용하세요.
 
 기본값:
 - `DB_URL=jdbc:postgresql://localhost:5432/esg_platform`
 - `DB_USERNAME=postgres`
 - `DB_PASSWORD=` (빈 값)
+
+로컬 DB 사용자명이 `postgres`가 아니면:
+- Mac/Linux: `DB_USERNAME=<내계정> ./gradlew bootRun`
+- Windows(PowerShell): `$env:DB_USERNAME="<내계정>"; .\gradlew.bat bootRun`
 
 ## 핵심 용어
 - **해시(SHA-256)**: 입력 데이터를 고정 길이 문자열로 변환한 값

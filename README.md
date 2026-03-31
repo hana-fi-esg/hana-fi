@@ -1,5 +1,27 @@
 # Hana ESG Platform (MVP)
 
+## Quick Backend Run
+
+Each teammate should run the backend with local environment variables instead of committing personal DB settings.
+
+Windows PowerShell
+```powershell
+cd backend
+$env:DB_URL="jdbc:postgresql://localhost:5432/esg_platform"
+$env:DB_USERNAME="postgres"
+$env:DB_PASSWORD="your-postgres-password"
+.\gradlew.bat bootRun
+```
+
+macOS / Linux
+```bash
+cd backend
+export DB_URL=jdbc:postgresql://localhost:5432/esg_platform
+export DB_USERNAME=postgres
+export DB_PASSWORD=your-postgres-password
+./gradlew bootRun
+```
+
 AI + 블록체인 기반 부동산 ESG 금융 의사결정 플랫폼 MVP입니다.
 
 ## 기술 스택

@@ -1,5 +1,47 @@
 # Backend (Spring Boot + Gradle + PostgreSQL)
 
+## Team Run Guide
+
+This project is designed so each teammate can run it with their own local database settings.
+Do not commit personal values such as DB password or local Java install paths.
+
+### Prerequisites
+- Java 17
+- PostgreSQL installed and running
+- Database created: `esg_platform`
+
+### Environment Variables
+The backend reads these values from each developer's local environment:
+- `DB_URL`
+- `DB_USERNAME`
+- `DB_PASSWORD`
+
+Default expectations:
+- `DB_URL=jdbc:postgresql://localhost:5432/esg_platform`
+- `DB_USERNAME=postgres`
+- `DB_PASSWORD=` your local PostgreSQL password
+
+### Windows PowerShell
+```powershell
+$env:DB_URL="jdbc:postgresql://localhost:5432/esg_platform"
+$env:DB_USERNAME="postgres"
+$env:DB_PASSWORD="your-postgres-password"
+.\gradlew.bat bootRun
+```
+
+### macOS / Linux
+```bash
+export DB_URL=jdbc:postgresql://localhost:5432/esg_platform
+export DB_USERNAME=postgres
+export DB_PASSWORD=your-postgres-password
+./gradlew bootRun
+```
+
+### Notes
+- PowerShell requires `.\gradlew.bat`, not just `gradlew.bat`
+- Keep passwords out of Git commits
+- Each teammate can use a different password and local PostgreSQL setup
+
 ## 왜 이 구조로 시작했는가
 - `Spring Boot`: REST API를 빠르게 만들기 좋고 팀원이 많아져도 구조가 안정적입니다.
 - `Gradle`: 빌드 속도가 빠르고 설정이 유연합니다.

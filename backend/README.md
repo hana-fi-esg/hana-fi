@@ -52,6 +52,8 @@ export DB_PASSWORD=your-postgres-password
 - `GET /blockchain/history`: 블록체인 이력 조회
 - `GET /health`: 서버 상태 확인
 - `POST /loan/recommendation`: 점수 기반 대출추천 계산
+- `POST /batch/integrity/run`: 무결성 점검 배치 Job 수동 실행
+- `GET /batch/integrity/runs`: 최근 배치 실행 이력 조회
 
 ## 실행
 1. PostgreSQL 실행 후 DB `esg_platform` 준비
@@ -86,3 +88,8 @@ Java 17 인식 오류가 날 때(Gradle toolchain):
 - **해시 체인**: 현재 블록이 이전 블록 해시를 포함해 연결되는 구조
 - **무결성**: 데이터가 중간에 변조되지 않았음을 검증할 수 있는 성질
 - **Batch**: 대량/주기 작업을 자동으로 실행하는 처리 방식
+
+## 배치 실행 예시
+서버 실행 후:
+- `POST /batch/integrity/run` 호출 -> 체인 무결성 검사 Job 실행
+- `GET /batch/integrity/runs` 호출 -> 실행 결과(`totalBlocks`, `chainValid`, `mismatchBlockIndex`) 확인

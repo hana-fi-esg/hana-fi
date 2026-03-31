@@ -7,5 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface BlockRecordRepository extends JpaRepository<BlockRecord, Long> {
     BlockRecord findTopByOrderByBlockIndexDesc();
 
+    List<BlockRecord> findAllByOrderByBlockIndexAsc();
+
     List<BlockRecord> findAllByOrderByBlockIndexDesc();
 }

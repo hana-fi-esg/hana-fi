@@ -22,17 +22,20 @@ public class BlockchainService {
     private final BlockRecordRepository blockRecordRepository;
     private final EsgScoringService esgScoringService;
     private final LoanRecommendationService loanRecommendationService;
+    private final ChainIntegrityService chainIntegrityService;
 
     public BlockchainService(
             AssetRepository assetRepository,
             BlockRecordRepository blockRecordRepository,
             EsgScoringService esgScoringService,
-            LoanRecommendationService loanRecommendationService
+            LoanRecommendationService loanRecommendationService,
+            ChainIntegrityService chainIntegrityService
     ) {
         this.assetRepository = assetRepository;
         this.blockRecordRepository = blockRecordRepository;
         this.esgScoringService = esgScoringService;
         this.loanRecommendationService = loanRecommendationService;
+        this.chainIntegrityService = chainIntegrityService;
     }
 
     @Transactional
@@ -82,28 +85,9 @@ public class BlockchainService {
     @Transactional(readOnly = true)
     public BlockchainHistoryResponse history() {
         List<BlockRecord> blocks = blockRecordRepository.findAllByOrderByBlockIndexDesc();
-        boolean integrity = isChainIntegrityValid(blocks);
+        ChainIntegrityService.IntegrityCheckResult integrityResult = chainIntegrityService.evaluate();
         List<BlockItemResponse> history = blocks.stream().map(this::toBlockItem).toList();
-        return new BlockchainHistoryResponse(true, integrity, history.size(), history);
-    }
-
-    private boolean isChainIntegrityValid(List<BlockRecord> blocks) {
-        if (blocks.isEmpty()) {
-            return true;
-        }
-
-        List<BlockRecord> ordered = blocks.stream()
-                .sorted((a, b) -> Long.compare(a.getBlockIndex(), b.getBlockIndex()))
-                .toList();
-
-        String expectedPrev = sha256("GENESIS");
-        for (BlockRecord block : ordered) {
-            if (!expectedPrev.equals(block.getPrevHashFull())) {
-                return false;
-            }
-            expectedPrev = block.getBlockHashFull();
-        }
-        return true;
+        return new BlockchainHistoryResponse(true, integrityResult.valid(), history.size(), history);
     }
 
     private String canonicalData(Asset asset, EsgResultResponse esg) {

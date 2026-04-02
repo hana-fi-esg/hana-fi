@@ -1,6 +1,8 @@
+import ESGResultPage from "./ESGResultPage";
 import { Building2, Home, Link2, PenSquare, Sparkles, TrendingUp } from "lucide-react";
 import { FormEvent, useEffect, useState } from "react";
 import { Link, Navigate, Route, Routes } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 type AssetInput = {
@@ -166,6 +168,7 @@ function HomePage() {
 }
 
 function InputPage() {
+  const navigate = useNavigate();
   const [form, setForm] = useState<AssetInput>({
     assetName: "",
     assetType: "오피스",
@@ -186,9 +189,29 @@ function InputPage() {
     setError("");
 
     try {
-      const res = await axios.post<SaveResponse>("http://localhost:8080/blockchain/save", form);
-      setResult(res.data);
-    } catch (err) {
+  // 👉 가짜 결과 (백엔드 없이 출력용)
+  setResult({
+    success: true,
+    assetId: 1,
+    esgResult: {
+      totalScore: 72,
+      totalMax: 100,
+      grade: "B",
+    },
+    loanResult: {
+      riskGrade: "중간",
+      interestAdjustment: "-0.8%",
+      ltvLimit: "60%",
+      recommendation: "우대금리 적용 가능",
+    },
+    block: {
+      blockIndex: 1,
+      blockHash: "0xA94F23C91B7E...C21D",
+    },
+  });
+   navigate("/result");
+
+} catch (err) {
       if (axios.isAxiosError(err)) {
         const message = err.response?.data?.message || `HTTP ${err.response?.status ?? "연결 실패"}`;
         setError(`요청 실패: ${message}`);
@@ -363,6 +386,7 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/input" element={<InputPage />} />
         <Route path="/history" element={<HistoryPage />} />
+        <Route path="/result" element={<ESGResultPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>
